@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-  initscr(); 
+  initscr();
   resize_term(200, 200);
   //palette
   start_color();
@@ -16,15 +16,15 @@ int main()
   init_pair(2, COLOR_RED, COLOR_BLACK);
   init_pair(3, COLOR_BLUE, COLOR_WHITE);
   bkgd(COLOR_PAIR(3));
-  
+
   WINDOW * main_window = newwin(40, 120, 0, 0);
   wbkgd(main_window, COLOR_PAIR(3));
-  
+
   refresh();
- 
+
   Map init;
 
-  // setlocale(LC_ALL, "");  
+  // setlocale(LC_ALL, "");
   // Curses 모드 시작 start_color(); // Color 사용 선언 init_pair(1, COLOR_RED,COLOR_WHITE);
 
 
@@ -35,7 +35,7 @@ int main()
 
   //background color
 
-  
+
   // mvprintw(1, 1, "Hello world");
 
   // attron(COLOR_PAIR(1));
@@ -45,7 +45,7 @@ int main()
 
   //border
 
-  
+
   // attron(COLOR_PAIR(2));
   // for (size_t i = 0; i < 60; i++)
   // {
@@ -61,5 +61,5 @@ int main()
 
   getch();
   endwin();
-  return 0; 
+  return 0;
 }

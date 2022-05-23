@@ -17,7 +17,7 @@ int main()
   init_pair(3, COLOR_BLACK, COLOR_WHITE);
   // bkgd(COLOR_PAIR(2));
 
-  WINDOW * main_window;
+  WINDOW *main_window;
   main_window = newwin(40, 125, 0, 0);
   wborder(main_window, '|', '|', '-', '-', '*', '*', '*', '*');
   wbkgd(main_window, COLOR_PAIR(3));

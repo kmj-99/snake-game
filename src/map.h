@@ -10,7 +10,7 @@ class Map{
         // int start_point2[2] = {5, 73};
         // int start_point3[2] = {23, 73};
         Map(){
-            start_color();            
+            start_color();
             main_board = newwin(30, 60, 5, 10);
             wbkgd(main_board, COLOR_PAIR(2));
 
@@ -39,7 +39,7 @@ class Map{
                 render_map();
                 a[1][i++] = 3;
                 cout << i << endl;
-                if(i == 55)
+                if(i == 10)
                     break;
             }
         };
@@ -98,7 +98,7 @@ class Map{
                 else if(this -> a[i][j] == 3){
                     wattron(main_board, COLOR_PAIR(4));
                     mvwprintw(main_board, i, j, "M");
-                    wattroff(main_board, COLOR_PAIR(4));                        
+                    wattroff(main_board, COLOR_PAIR(4));
                 }
             }
         wrefresh(main_board);

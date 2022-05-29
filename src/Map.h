@@ -1,4 +1,3 @@
-
 // int start_point1[2] = {5, 10};
 // int start_point2[2] = {5, 73};
 // int start_point3[2] = {23, 73};

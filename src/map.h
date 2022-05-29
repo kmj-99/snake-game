@@ -1,44 +1,12 @@
-#include <unistd.h>
-#include <signal.h>
-#include <vector>
 
-using namespace std;
-
+// int start_point1[2] = {5, 10};
+// int start_point2[2] = {5, 73};
+// int start_point3[2] = {23, 73};
 class Map{
     public:
-        vector<vector<int> > snake; // snake ((head x, head y),(body x, body y),(body)...)
-        WINDOW *main_board, *score_board, *mission_board;
-          
-        // int start_point1[2] = {5, 10};
-        // int start_point2[2] = {5, 73};
-        // int start_point3[2] = {23, 73};
-        Map(){
-            vector<int> head{15, 30};
-            snake.push_back(head);
-            start_color();            
-            main_board = newwin(30, 60, 5, 10);
-            wbkgd(main_board, COLOR_PAIR(2));
-
-
-                // wborder(main_board, '*', '*', '*', '*', '*', '*', '*', '*');
-
-
-            score_board = newwin(15, 40, 5, 73);
-            wbkgd(score_board, COLOR_PAIR(2));
-            wattron(score_board, COLOR_PAIR(2));
-            wborder(score_board, '*', '*', '*', '*', '*', '*', '*', '*');
-            mvwprintw(score_board, 0, 14, "Score Board");
-
-
-            mission_board = newwin(12, 40, 23, 73);
-            wbkgd(mission_board, COLOR_PAIR(2));
-            wattron(mission_board, COLOR_PAIR(2));
-            wborder(mission_board, '*', '*', '*', '*', '*', '*', '*', '*');
-            mvwprintw(mission_board, 0, 14, "Mission Board");
-
-        };
-
-        int a[30][60] = {
+        //main board array
+        // 0 : empty space, 1 : wall, 3 : snake
+        int m[30][60] = {
                    {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
                    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},

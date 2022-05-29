@@ -55,7 +55,7 @@ int main()
   Snake snake;
   while(1){
     int val;
-    val=test.sense(inputSnakeWay());
+    val=snake.sense(inputSnakeWay());
 
     refresh();
   }

@@ -2,6 +2,8 @@
 #include "Map.h"
 #include "Snake.h"
 #include "BoardController.h"
+#include "GateController.h"
+#include <signal.h>
 
 #define UP 259
 #define RIGHT 261
@@ -15,33 +17,44 @@ void sig_alrm(int signum){
   _signal = false;
 }
 
+
 //
 class GameController{
     public:
         Map map;
         Snake snake;
         BoardController board;
-
+        int gateCount=0;
         //Constructor
         GameController() : board(), snake() {
+            Gate gate(map);
+            gate.gateRefresh(); // gateRefresh
+
             //alarm handler
-            signal(SIGALRM, sig_alrm);
+            signal(SIGALRM,sig_alrm);
 
             //rendering map by 1sec with keyboard input
             render_map();
                 int tmp, command;
                 while(true){
+                if(gateCount==10){
+                  gateCount=0;
+                  gate.gateRefresh();
+                }
+                gateCount++;
                 _signal = true;
-                alarm(1); // set alarm timer to 1sec
+                ualarm(500000,0); // set alarm timer to 1sec
                 while(_signal){ // receive keyboard input until alarm ringing
                     tmp = keyboard_input();
                     command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
                 }
-                cout << command << endl;
+
                 snake.move(command);
                 string state1 = to_string(snake.body[0][0]);
                 string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
                 mvwprintw(board.score_board, 5, 5, state2.c_str());
+
+
                 render_map();
             }
         }
@@ -50,6 +63,10 @@ class GameController{
     void render_map(){
         clear_map();
         set_snake();
+
+        wrefresh(board.main_board);
+        wrefresh(board.score_board);
+        wrefresh(board.mission_board);
             for (size_t i = 0; i < 30; i++)
                 for (size_t j = 0; j < 60; j++)
                 {
@@ -68,8 +85,13 @@ class GameController{
                         wattron(board.main_board, COLOR_PAIR(4));
                         mvwprintw(board.main_board, i, j, "M");
                         wattroff(board.main_board, COLOR_PAIR(4));
+                    }else if(map.m[i][j]==10){ // Gate
+                      wattron(board.main_board,COLOR_PAIR(2));
+                      mvwprintw(board.main_board,i,j,"1");
+                      wattroff(board.main_board, COLOR_PAIR(2));
                     }
                 }
+
             wrefresh(board.main_board);
             wrefresh(board.score_board);
             wrefresh(board.mission_board);
@@ -78,9 +100,14 @@ class GameController{
     //erase snake before rendering snake inside map
     void clear_map(){
         for (size_t i = 0; i < 30; i++)
-            for (size_t j = 0; j < 60; j++)
+            for (size_t j = 0; j < 60; j++){
                 if (map.m[i][j] == 3)
                     map.m[i][j] = 0;
+
+                if(gateCount==10 && map.m[i][j]==10){
+                    map.m[i][j]=1;
+                }
+              }
     }
 
     //set snake in the map array
@@ -89,6 +116,7 @@ class GameController{
         {
             int tmp_x = (*i)[0];
             int tmp_y = (*i)[1];
+
             map.m[tmp_x][tmp_y] = 3;
         }
     }

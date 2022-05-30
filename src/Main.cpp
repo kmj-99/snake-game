@@ -23,7 +23,7 @@ int main()
 
   //keypad setting
   keypad(stdscr, TRUE);
-  
+
   //cursor setting
   curs_set(0);
   noecho();
@@ -31,7 +31,7 @@ int main()
   //refresh background
   resize_term(200, 200);
   refresh();
-  
+
   //palette
   start_color();
   init_pair(1, COLOR_BLUE, COLOR_YELLOW); // wall color
@@ -46,18 +46,11 @@ int main()
   wborder(main_window, '|', '|', '-', '-', '*', '*', '*', '*');
   wbkgd(main_window, COLOR_PAIR(3));
   wrefresh(main_window);
-  
+
   // game setting
   GameController start;
-  
+
   getch();
   endwin();
   return 0;
 }
-
-
-
-
-
-
-

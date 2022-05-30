@@ -4,9 +4,9 @@ class BoardController{
     public:
         WINDOW *main_board, *score_board, *mission_board;
         BoardController(){
-            start_color();      
+            start_color();
 
-            //set main board      
+            //set main board
             main_board = newwin(30, 60, 5, 10);
             wbkgd(main_board, COLOR_PAIR(2));
 

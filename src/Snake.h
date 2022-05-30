@@ -14,7 +14,7 @@ class Snake{
             body.push_back(head);
         };
 
-        //size up 
+        //size up
         void size_up(){};
 
         //move snake
@@ -22,7 +22,7 @@ class Snake{
         switch(command)
         {
             case 1: // up
-                body[0][0]--;  
+                body[0][0]--;
                 break;
             case 2: // right
                 body[0][1]++;

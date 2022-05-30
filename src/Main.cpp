@@ -9,7 +9,7 @@ int main()
 {
   //alarm handler
   // signal(SIGALRM, sig_alrm);
-
+  srand((unsigned int)time(NULL));
   //init screen
   try
   {

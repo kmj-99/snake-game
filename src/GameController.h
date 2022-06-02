@@ -66,13 +66,6 @@ class GameController{
                     command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
                 }
                 snake.move(command);
-                // string state1 = to_string(snake.body[0][0]);
-                // string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
-                // mvwprintw(board.score_board, 5, 5, state2.c_str());
-
-
-                // if snake eat item
-
 
                 switch(gateShape){ // gate의 유형에 따라 다른 로직구현
                   case 0: // x_line , x_line
@@ -84,6 +77,7 @@ class GameController{
                           snake.move(LEFT);
                           snake.body[0][1]=gateY2;
                         }else{
+                          command=2; // right
                           snake.move(RIGHT);
                           snake.body[0][1]=0;
                         }
@@ -94,7 +88,8 @@ class GameController{
                           snake.move(RIGHT);
                           snake.body[0][1]=gateY1;
                         }else{
-                          snake.move(LEFT);
+                          command=2; // right
+                          snake.move(RIGHT);
                           snake.body[0][1]=59;
                         }
                       }
@@ -107,6 +102,7 @@ class GameController{
                         if(gate.getXSame()==0){
                           snake.move(RIGHT);
                         }else{
+                          command=3; // left
                           snake.move(LEFT);
                         }
                       }else if(snake.body[0][0]==gateX2){
@@ -116,11 +112,62 @@ class GameController{
                         if(gate.getXSame()==0){
                           snake.move(RIGHT);
                         }else{
+                          command=3; //left
                           snake.move(LEFT);
                         }
                       }
                     }
                   break;
+
+                  case 1: // y_line, y_line
+                    if(snake.body[0][0]==0){ // 위쪽 gate로 갈때
+                      if(snake.body[0][1]==gateY1){ // gateY1로 들어갈 때
+                        snake.body[0][1]=gateY2;
+                        gateCount=-10;
+                        if(gate.getYSame()==0){ // 같은 라인인지 검사
+                          snake.move(DOWN);
+                          snake.body[0][0]=gateX2;
+                        }else{
+                          command=4; // down
+                          snake.move(DOWN);
+                          snake.body[0][0]=gateX2;
+                        }
+                      }else if(snake.body[0][1]==gateY2){ // gateX2로 들어갈 때
+                        snake.body[0][1]=gateY1;
+                        gateCount=-10;
+                        if(gate.getYSame()==0){
+                          snake.move(DOWN);
+                          snake.body[0][0]=gateX1;
+                        }else{
+                          command=1; // up
+                          snake.move(UP);
+                          snake.body[0][0]=gateX1;
+                        }
+                      }
+                    }else if(snake.body[0][1]==59){ // 오른쪽 gate로 갈때
+
+                      if(snake.body[0][0]==gateX1){
+                        snake.body[0][0]=gateX2;
+                        snake.body[0][1]=gateY2;
+                        gateCount=-10;
+                        if(gate.getXSame()==0){
+                        snake.move(RIGHT);
+                        }else{
+                          command=3; // left
+                          snake.move(LEFT);
+                        }
+                      }else if(snake.body[0][0]==gateX2){
+                        snake.body[0][0]=gateX1;
+                        snake.body[0][1]=gateY1;
+                        gateCount=-10;
+                        if(gate.getXSame()==0){
+                          snake.move(RIGHT);
+                        }else{
+                          command=3; //left
+                          snake.move(LEFT);
+                        }
+                      }
+                    }
 
 
                 };

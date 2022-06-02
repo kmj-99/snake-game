@@ -70,12 +70,7 @@ class GameController{
                 // string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
                 // mvwprintw(board.score_board, 5, 5, state2.c_str());
 
-                //snake head hit body
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
-                {
-                    break;
-                }
-                
+
                 // if snake eat item
 
 
@@ -126,10 +121,6 @@ class GameController{
                       }
                     }
                   break;
-
-                  case 1: // y_line y_line
-
-                  case 2: // x_line , y_line
 
 
                 };
@@ -195,7 +186,7 @@ class GameController{
         wrefresh(board.score_board);
         wrefresh(board.mission_board);
     };
-
+}
     //erase snake before rendering snake inside map
     void clear_map(){
         for (size_t i = 0; i < 30; i++)

@@ -17,7 +17,7 @@ class Snake{
             body.push_back(head);
             body.push_back(head2);
             body.push_back(head3);
-
+            
         };
 
         //size up
@@ -29,28 +29,22 @@ class Snake{
         void move(int command){
             vector<int> tmp_head = body[0];
             vector<int> tmp;
-
+            
             //head move first
             switch(command)
             {
+                
                 case 1: // up
                     body[0][0]--;
-                    body[0][0]=body[0][0]%30;
                     break;
                 case 2: // right
                     body[0][1]++;
-                    body[0][1]=body[0][1]%60;
                     break;
                 case 3: // left
                     body[0][1]--;
-                    if(body[0][1]<0){
-                      body[0][1]=59;
-                    }
-                    body[0][1]=body[0][1]%60;
                     break;
                 case 4: // down
                     body[0][0]++;
-                    body[0][0]=body[0][0]%30;
                     break;
                 case 5: // backspace
                     break;

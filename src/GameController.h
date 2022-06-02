@@ -24,8 +24,7 @@ class GameController{
         Snake snake;
         BoardController board;
         int gateCount = 0;
-        int gateX1=0,gateY1=0 , gateX2=0 , gateY2=0 , gateShape=0;
-        int gateXBorder=0,gateYBorder=0;
+
         //Constructor
         GameController() : board(), snake() {
             Gate gate(map);
@@ -36,27 +35,13 @@ class GameController{
 
             //rendering map by 1sec with keyboard input
             render_map();
-
-            int tmp, command;
-            gate.gateRefresh();
-            gateX1=gate.getX1();
-            gateY1=gate.getY1();
-            gateX2=gate.getX2();
-            gateY2=gate.getY2();
-            gateXBorder=gate.getXBorder();
-            gateYBorder=gate.getYBorder();
-
+            int tmp, command = 2;
+            
+            //main game loop
             while(true){
                 if(gateCount == 10){
-                  gateCount=-50;
+                  gateCount = 0;
                   gate.gateRefresh();
-                  gateX1=gate.getX1();
-                  gateY1=gate.getY1();
-                  gateX2=gate.getX2();
-                  gateY2=gate.getY2();
-                  gateShape=gate.getShape();
-                  gateXBorder=gate.getXBorder();
-                  gateYBorder=gate.getYBorder();
                 }
                 gateCount++;
                 _signal = true;
@@ -66,7 +51,9 @@ class GameController{
                     command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
                 }
                 snake.move(command);
-                 //snake head hit body
+                
+
+                //snake head hit body
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
                 {
                     break;
@@ -80,123 +67,15 @@ class GameController{
                     string state1 = "snake size is : " + to_string(snake.body.size());
                     mvwprintw(board.score_board, 5, 5, state1.c_str());
                 }
-
-                switch(gateShape){ // gate의 유형에 따라 다른 로직구현
-                  case 0: // x_line , x_line
-                    if(snake.body[0][1]==0){ // 왼쪽 gate로 갈때
-                      if(snake.body[0][0]==gateX1){ // gateX1로 들어갈 때
-                        snake.body[0][0]=gateX2;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){ // 같은 라인인지 검사
-                          snake.move(LEFT);
-                          snake.body[0][1]=gateY2;
-                        }else{
-                          command=2; // right
-                          snake.move(RIGHT);
-                          snake.body[0][1]=0;
-                        }
-                      }else if(snake.body[0][0]==gateX2){ // gateX2로 들어갈 때
-                        snake.body[0][0]=gateX1;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){
-                          snake.move(RIGHT);
-                          snake.body[0][1]=gateY1;
-                        }else{
-                          command=2; // right
-                          snake.move(RIGHT);
-                          snake.body[0][1]=59;
-                        }
-                      }
-                    }else if(snake.body[0][1]==59){ // 오른쪽 gate로 갈때
-
-                      if(snake.body[0][0]==gateX1){
-                        snake.body[0][0]=gateX2;
-                        snake.body[0][1]=gateY2;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){
-                          snake.move(RIGHT);
-                        }else{
-                          command=3; // left
-                          snake.move(LEFT);
-                        }
-                      }else if(snake.body[0][0]==gateX2){
-                        snake.body[0][0]=gateX1;
-                        snake.body[0][1]=gateY1;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){
-                          snake.move(RIGHT);
-                        }else{
-                          command=3; //left
-                          snake.move(LEFT);
-                        }
-                      }
-                    }
-                  break;
-
-                  case 1: // y_line, y_line
-                    if(snake.body[0][0]==0){ // 위쪽 gate로 갈때
-                      if(snake.body[0][1]==gateY1){ // gateY1로 들어갈 때
-                        snake.body[0][1]=gateY2;
-                        gateCount=-10;
-                        if(gate.getYSame()==0){ // 같은 라인인지 검사
-                          snake.move(DOWN);
-                          snake.body[0][0]=gateX2;
-                        }else{
-                          command=4; // down
-                          snake.move(DOWN);
-                          snake.body[0][0]=gateX2;
-                        }
-                      }else if(snake.body[0][1]==gateY2){ // gateX2로 들어갈 때
-                        snake.body[0][1]=gateY1;
-                        gateCount=-10;
-                        if(gate.getYSame()==0){
-                          snake.move(DOWN);
-                          snake.body[0][0]=gateX1;
-                        }else{
-                          command=1; // up
-                          snake.move(UP);
-                          snake.body[0][0]=gateX1;
-                        }
-                      }
-                    }else if(snake.body[0][1]==59){ // 오른쪽 gate로 갈때
-
-                      if(snake.body[0][0]==gateX1){
-                        snake.body[0][0]=gateX2;
-                        snake.body[0][1]=gateY2;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){
-                        snake.move(RIGHT);
-                        }else{
-                          command=3; // left
-                          snake.move(LEFT);
-                        }
-                      }else if(snake.body[0][0]==gateX2){
-                        snake.body[0][0]=gateX1;
-                        snake.body[0][1]=gateY1;
-                        gateCount=-10;
-                        if(gate.getXSame()==0){
-                          snake.move(RIGHT);
-                        }else{
-                          command=3; //left
-                          snake.move(LEFT);
-                        }
-                      }
-                    }
-
-
-                };
-
-
-                string state1 = to_string(snake.body[0][0]);
-                string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
-                mvwprintw(board.score_board, 5, 5, state2.c_str());
+                
+                
                 render_map();
             }
+            while(true){ };
         }
 
     //refresh map array every 1sec to rendering map
     void render_map(){
-
         clear_map();
         set_snake();
 
@@ -241,30 +120,26 @@ class GameController{
                     wattroff(board.main_board, COLOR_PAIR(2));
                 }
             }
+        }
 
-        refresh();
+    
         wrefresh(board.main_board);
         wrefresh(board.score_board);
         wrefresh(board.mission_board);
     };
-}
+
     //erase snake before rendering snake inside map
     void clear_map(){
         for (size_t i = 0; i < 30; i++)
             for (size_t j = 0; j < 60; j++){
-                if (map.m[i][j] == 3){
-                  if(j==0 || j==59|| i==0 || i==29){
-                    map.m[i][j]=1;
-                  }else{
+                if (map.m[i][j] == 3)
                     map.m[i][j] = 0;
 
-                  }
+                if (map.m[i][j] == 2)
+                    map.m[i][j] = 0;
 
-                }
-
-                if(gateCount==10 && map.m[i][j]==10){
-                    map.m[i][j]=1;
-
+                if(gateCount == 10 && map.m[i][j] == 10){
+                    map.m[i][j] = 1;
                 }
               }
     }

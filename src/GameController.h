@@ -117,43 +117,9 @@ class GameController{
                     }
                   break;
 
-                  case 1: // y_line y_line
-
-                  case 2: // x_line , y_line
-
 
                 };
 
-
-
-
-                // if (map.m[snake.body[0][0]][snake.body[0][1]] == 2)
-                // {
-                //     map.m[snake.body[0][0]][snake.body[0][1]] = 0;
-                //     snake.size_up();
-                //     string state1 = to_string(snake.body.size());
-                //     mvwprintw(board.score_board, 5, 5, state1.c_str());
-                // }
-                //
-                // if(gateXBorder==0){ // left Boarder
-                //   if(snake.body[0][0]==gateX &&snake.body[0][1]==0){
-                //       cout<<"hello"<<endl;
-                //   }
-                // }else{ // right Board
-                //   if(snake.body[0][0]==gateX&&snake.body[0][1]==59){
-                //     cout<<"hello"<<endl;
-                //   }
-                // }
-                //
-                // if(gateYBorder==0){ // up Board
-                //   if(snake.body[0][0]==0 &&snake.body[0][1]==gateY){
-                //     cout<<"world2"<<endl;
-                //   }
-                // }else{   // down Board
-                //   if(snake.body[0][0]==29 &&snake.body[0][1]==gateY){
-                //     cout<<"world2"<<endl;
-                //   }
-                // }
 
 
 

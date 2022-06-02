@@ -32,10 +32,11 @@ class GameController{
             gate.gateRefresh(); // gateRefresh
 
             //alarm handler
-            signal(SIGALRM,sig_alrm);
+            signal(SIGALRM, sig_alrm);
 
             //rendering map by 1sec with keyboard input
             render_map();
+
             int tmp, command;
             gate.gateRefresh();
             gateX1=gate.getX1();
@@ -64,8 +65,17 @@ class GameController{
                     tmp = keyboard_input();
                     command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
                 }
-
                 snake.move(command);
+                // string state1 = to_string(snake.body[0][0]);
+                // string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
+                // mvwprintw(board.score_board, 5, 5, state2.c_str());
+
+                //snake head hit body
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
+                {
+                    break;
+                }
+
                 // if snake eat item
 
 
@@ -121,11 +131,6 @@ class GameController{
                 };
 
 
-
-
-
-
-
                 string state1 = to_string(snake.body[0][0]);
                 string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
                 mvwprintw(board.score_board, 5, 5, state2.c_str());
@@ -142,23 +147,26 @@ class GameController{
         wrefresh(board.main_board);
         wrefresh(board.score_board);
         wrefresh(board.mission_board);
-        for (size_t i = 0; i < 30; i++)
+
+
+
+        for (size_t i = 0; i < 30; i++){
             for (size_t j = 0; j < 60; j++)
             {
-                if (map.m[i][j] == 0)
+                if (map.m[i][j] == 0) // empty space
                 {
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, " ");
                     wattroff(board.main_board, COLOR_PAIR(2));
                 }
-                else if(map.m[i][j] == 1){
+                else if(map.m[i][j] == 1){ // wall
                     wattron(board.main_board, COLOR_PAIR(1));
                     mvwprintw(board.main_board, i, j, " ");
                     wattroff(board.main_board, COLOR_PAIR(1));
                 }
-                else if(map.m[i][j] == 3){
+                else if(map.m[i][j] == 3){ // snake body
                     wattron(board.main_board, COLOR_PAIR(4));
-                    mvwprintw(board.main_board, i, j, "M");
+                    mvwprintw(board.main_board, i, j, "O");
                     wattroff(board.main_board, COLOR_PAIR(4));
                 }
                 else if(map.m[i][j] == 10){ // Gate
@@ -166,7 +174,12 @@ class GameController{
                     mvwprintw(board.main_board, i, j, "1");
                     wattroff(board.main_board, COLOR_PAIR(2));
                 }
-                else if(map.m[i][j] == 2){ // item
+                else if(map.m[i][j] == 2){ // snake head
+                    wattron(board.main_board, COLOR_PAIR(2));
+                    mvwprintw(board.main_board, i, j, "M");
+                    wattroff(board.main_board, COLOR_PAIR(2));
+                }
+                else if(map.m[i][j] == 4){ // item
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, "I");
                     wattroff(board.main_board, COLOR_PAIR(2));
@@ -195,16 +208,21 @@ class GameController{
 
                 if(gateCount==10 && map.m[i][j]==10){
                     map.m[i][j]=1;
+
                 }
               }
     }
 
     //set snake in the map array
     void set_snake(){
-        for (vector<vector<int> >::iterator i = snake.body.begin(); i != snake.body.end(); i++)
+        int tmp_x = snake.body[0][0];
+        int tmp_y = snake.body[0][1];
+        map.m[tmp_x][tmp_y] = 2;
+
+        for (vector<vector<int> >::iterator i = snake.body.begin() + 1; i != snake.body.end(); i++)
         {
-            int tmp_x = (*i)[0];
-            int tmp_y = (*i)[1];
+            tmp_x = (*i)[0];
+            tmp_y = (*i)[1];
             map.m[tmp_x][tmp_y] = 3;
         }
     }

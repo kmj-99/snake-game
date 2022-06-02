@@ -51,9 +51,7 @@ class GameController{
                     command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
                 }
                 snake.move(command);
-                // string state1 = to_string(snake.body[0][0]);
-                // string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
-                // mvwprintw(board.score_board, 5, 5, state2.c_str());
+                
 
                 //snake head hit body
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
@@ -65,7 +63,6 @@ class GameController{
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 4)
                 {
                     map.m[snake.body[0][0]][snake.body[0][1]] = 0;
-                    
                     snake.size_up();
                     string state1 = "snake size is : " + to_string(snake.body.size());
                     mvwprintw(board.score_board, 5, 5, state1.c_str());
@@ -180,3 +177,10 @@ class GameController{
         return 0;
     }
 };
+
+
+
+
+// string state1 = to_string(snake.body[0][0]);
+                // string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
+                // mvwprintw(board.score_board, 5, 5, state2.c_str());

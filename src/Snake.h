@@ -6,11 +6,11 @@ class Snake{
     public:
         //snake vector ((head x, head y),(body x, body y),(body)(body)...)
         vector<vector<int> > body;
-        int size; // size of snake, default = 1
+        // int size; // size of snake, default = 3
         vector<int> empty_body{15, 30};
 
         //Constructor
-        Snake(int size = 1) : size(size){
+        Snake() {
             vector<int> head{15, 30};
             vector<int> head2{15, 29};
             vector<int> head3{15, 28};

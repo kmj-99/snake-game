@@ -23,63 +23,56 @@ class GameController{
         Map map;
         Snake snake;
         BoardController board;
-        int gateCount = 0;
-        int gateX1=0,gateY1=0 , gateX2=0 , gateY2=0 , gateShape=0;
-        int gateXBorder=0,gateYBorder=0;
+        Gate gate;
+        int keyboard_in, command = 2, gateCount = 0;
         //Constructor
-        GameController() : board(), snake() {
-
+        GameController() : board(), snake(), gate(map, snake, command, gateCount) {
             //alarm handler
             signal(SIGALRM, sig_alrm);
+            //Gate controller
+            game_start();
+        }
 
-            //rendering map by 1sec with keyboard input
-            render_map();
-
-            int tmp, command;
-            Gate gate(map,snake,command,gateCount);
-
+    void game_start(){
             gate.gateRefresh(); // gateRefresh
-
-
             while(true){
                 if(gateCount == 10){
-                  gateCount=-50;
+                  gateCount = -50;
                   gate.gateRefresh();
-
                 }
                 gateCount++;
                 _signal = true;
                 ualarm(100000, 0); // set alarm timer to 1sec
                 while(_signal){ // receive keyboard input until alarm ringing
-                    tmp = keyboard_input();
-                    command = tmp != 0 ? tmp : command; // if no keyboard input received, do prev action
+                    keyboard_in = keyboard_input();
+                    command = keyboard_in != 0 ? keyboard_in : command; // if no keyboard input received, do prev action
                 }
                 snake.move(command);
-
-
+                //snake head hit body
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
+                    break;
+                
+                // if snake eat item
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == 4)
+                {
+                    map.m[snake.body[0][0]][snake.body[0][1]] = 0;
+                    snake.size_up();
+                    string state1 = "snake size is : " + to_string(snake.body.size());
+                    mvwprintw(board.score_board, 5, 5, state1.c_str());
+                }
                 gate.gateSensor();
-
-
-
-                string state1 = to_string(snake.body[0][0]);
-                string state2 = "x: " + state1 + " y: " + to_string(snake.body[0][1]);
-                mvwprintw(board.score_board, 5, 5, state2.c_str());
                 render_map();
             }
-        }
+    }
+
 
     //refresh map array every 1sec to rendering map
     void render_map(){
-
         clear_map();
         set_snake();
-
         wrefresh(board.main_board);
         wrefresh(board.score_board);
         wrefresh(board.mission_board);
-
-
-
         for (size_t i = 0; i < 30; i++){
             for (size_t j = 0; j < 60; j++)
             {
@@ -135,7 +128,6 @@ class GameController{
                   }
 
                 }
-
                 if(gateCount==10 && map.m[i][j]==10){
                     map.m[i][j]=1;
 

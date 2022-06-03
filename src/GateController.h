@@ -1,21 +1,25 @@
 #include "Map.h"
 #include <cstdlib>
 #include <ctime>
-
+#define UP 259
+#define RIGHT 261
+#define LEFT 260
+#define DOWN 258
 using namespace std;
 
 
 class Gate{
     public:
         Map& gateMap;
-        Gate(Map& map) : gateMap(map){};
+        Snake& snake;
+        int& command;
+        int& gateCount;
+        Gate(Map& map,Snake& snake,int& command,int& gateCount) : gateMap(map) ,snake(snake),command(command),gateCount(gateCount){};
         int x=-1,y=-1;
         int x2=-1, y2=-1;
-        int resX1=-1,resY1=-1;
-        int resX2=-1,resY2=-1;
+        int gateX1=-1,gateY1=-1,gateX2=-1,gateY2=-1;
         int x_border=-1 , y_border=-1;
-        int x_border_left=-1, x_border_right=-1;
-        int y_border_up=-1 , y_border_down=-1;
+        int x_border_left=-1, x_border_right=-1,y_border_up=-1 , y_border_down=-1;
         int x_same_border=0,y_same_border=0;
         int shape=0;
 
@@ -23,7 +27,7 @@ class Gate{
           x_border=-1;
           y_border=-1;
           shape=0;
-          x=-1; y=-1; resX1=-1; resX2=-1; resY1=-1; resY2=-1;
+          x=-1; y=-1; gateX1=-1; gateX2=-1; gateY1=-1; gateY2=-1;
           x_border_left=-1; x_border_right=-1;
           y_border_up=-1; y_border_down=-1;
           x_same_border=-1; y_same_border=-1;
@@ -47,13 +51,13 @@ class Gate{
                 if(x%2==0){
                   gateMap.m[x][0] = 10;
                   gateMap.m[x2][0] = 10;
-                  resX1=x; resY1=0;
-                  resX2=x2; resY2=0;
+                  gateX1=x; gateY1=0;
+                  gateX2=x2; gateY2=0;
                 }else{
                   gateMap.m[x][59] = 10;
                   gateMap.m[x2][59] = 10;
-                  resX1=x; resY1=59;
-                  resX2=x2; resY2=59;
+                  gateX1=x; gateY1=59;
+                  gateX2=x2; gateY2=59;
                 }
 
               }else{
@@ -62,8 +66,8 @@ class Gate{
                 x2=rand()%28 + 1;
                 gateMap.m[x][0]=10;
                 gateMap.m[x2][59]=10;
-                resX1=x; resY1=0;
-                resX2=x2; resY2=59;
+                gateX1=x; gateY1=0;
+                gateX2=x2; gateY2=59;
               }
 
               break;
@@ -82,13 +86,13 @@ class Gate{
                 if(y%2==0){
                   gateMap.m[0][y]=10;
                   gateMap.m[0][y2]=10;
-                  resX1=0; resY1=y;
-                  resX2=0; resY2=y2;
+                  gateX1=0; gateY1=y;
+                  gateX2=0; gateY2=y2;
                 }else{
                   gateMap.m[29][y]=10;
                   gateMap.m[29][y2]=10;
-                  resX1=29; resY1=y;
-                  resX2=29; resY2=y2;
+                  gateX1=29; gateY1=y;
+                  gateX2=29; gateY2=y2;
                 }
 
               }else{
@@ -97,8 +101,8 @@ class Gate{
                 y2=rand()%58 + 1;
                 gateMap.m[0][y]=10;
                 gateMap.m[29][y2]=10;
-                resX1=0; resY1=y;
-                resX2=29; resY2=y2;
+                gateX1=0; gateY1=y;
+                gateX2=29; gateY2=y2;
               }
               break;
             case 2: // x_border , y_border
@@ -113,20 +117,20 @@ class Gate{
 
               if(x_border == 0) {
                 gateMap.m[x][0] = 10;
-                resX1=x; resY1=0;
+                gateX1=x; gateY1=0;
               }
               else if(x_border == 1) {
                 gateMap.m[x][59] = 10;
-                resX1=x; resY1=59;
+                gateX1=x; gateY1=59;
               }
 
               if(y_border == 0) {
                 gateMap.m[0][y] = 10;
-                resX2=0; resY2=y;
+                gateX2=0; gateY2=y;
               }
               else if(y_border == 1) {
                 gateMap.m[29][y] = 10;
-                resX2=29; resY2=y;
+                gateX2=29; gateY2=y;
               }
 
               break;
@@ -136,40 +140,115 @@ class Gate{
 
         }
 
-        int getX1(){
-          return resX1;
+
+        // gate를 감지해서 통과하게 만다는 함수
+        void gateSensor(){
+          switch(shape){ // gate의 유형에 따라 다른 로직구현
+            case 0: // x_line , x_line
+              if(snake.body[0][1]==0){ // 왼쪽 gate로 갈때
+                if(snake.body[0][0]==gateX1){ // gateX1로 들어갈 때
+                  snake.body[0][0]=gateX2;
+                  gateCount=-10;
+                  if(x_same_border==0){ // 같은 라인인지 검사
+                    snake.move(LEFT);
+                    snake.body[0][1]=gateY2;
+                  }else{
+                    command=2; // right
+                    snake.move(RIGHT);
+                    snake.body[0][1]=0;
+                  }
+                }else if(snake.body[0][0]==gateX2){ // gateX2로 들어갈 때
+                  snake.body[0][0]=gateX1;
+                  gateCount=-10;
+                  if(x_same_border==0){
+                    snake.move(RIGHT);
+                    snake.body[0][1]=gateY1;
+                  }else{
+                    command=2; // right
+                    snake.move(RIGHT);
+                    snake.body[0][1]=59;
+                  }
+                }
+              }else if(snake.body[0][1]==59){ // 오른쪽 gate로 갈때
+
+                if(snake.body[0][0]==gateX1){
+                  snake.body[0][0]=gateX2;
+                  snake.body[0][1]=gateY2;
+                  gateCount=-10;
+                  if(x_same_border==0){
+                    snake.move(RIGHT);
+                  }else{
+                    command=3; // left
+                    snake.move(LEFT);
+                  }
+                }else if(snake.body[0][0]==gateX2){
+                  snake.body[0][0]=gateX1;
+                  snake.body[0][1]=gateY1;
+                  gateCount=-10;
+                  if(x_same_border==0){
+                    snake.move(RIGHT);
+                  }else{
+                    command=3; //left
+                    snake.move(LEFT);
+                  }
+                }
+              }
+            break;
+
+            case 1: // y_line, y_line
+              if(snake.body[0][0]==0){ // 위쪽 gate로 갈때
+                if(snake.body[0][1]==gateY1){ // gateY1로 들어갈 때
+                  snake.body[0][1]=gateY2;
+                  gateCount=-10;
+                  if(y_same_border==0){ // 같은 라인인지 검사
+                    snake.move(DOWN);
+                    snake.body[0][0]=gateX2;
+                  }else{
+                    command=4; // down
+                    snake.move(DOWN);
+                    snake.body[0][0]=gateX2;
+                  }
+                }else if(snake.body[0][1]==gateY2){ // gateX2로 들어갈 때
+                  snake.body[0][1]=gateY1;
+                  gateCount=-10;
+                  if(y_same_border==0){
+                    snake.move(DOWN);
+                    snake.body[0][0]=gateX1;
+                  }else{
+                    command=1; // up
+                    snake.move(UP);
+                    snake.body[0][0]=gateX1;
+                  }
+                }
+              }else if(snake.body[0][1]==59){ // 아래쪽 gate로 갈때
+
+                if(snake.body[0][1]==gateY1){
+                  snake.body[0][1]=gateY2;
+                  gateCount=-10;
+                  if(y_same_border==0){
+                  snake.move(DOWN);
+                  snake.body[0][0]=gateX2;
+                  }else{
+                    command=1; // up
+                    snake.move(UP);
+                    snake.body[0][0]=gateX2;
+                  }
+                }else if(snake.body[0][1]==gateY2){
+                  snake.body[0][1]=gateY1;
+                  gateCount=-10;
+                  if(y_same_border==0){
+                    snake.move(DOWN);
+                    snake.body[0][0]=gateX1;
+                  }else{
+                    command=1; //up
+                    snake.move(DOWN);
+                    snake.body[0][0]=gateX1;
+                  }
+                }
+              }
+
+          };
         }
 
-        int getX2(){
-          return resX2;
-        }
-
-        int getY1(){
-          return resY1;
-        }
-
-        int getY2(){
-          return resY2;
-        }
-
-        int getXSame(){
-          return x_same_border;
-        }
-        int getYSame(){
-          return y_same_border;
-        }
-
-        int getShape(){
-          return shape;
-        }
-
-
-
-        int getXBorder(){
-            return x_border;
-        }
-        int getYBorder(){
-            return y_border;
-        }
 
 };

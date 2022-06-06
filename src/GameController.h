@@ -3,6 +3,7 @@
 #include "Snake.h"
 #include "BoardController.h"
 #include "GateController.h"
+#include "Item.h"
 #include <signal.h>
 
 #define UP 259
@@ -20,11 +21,13 @@ void sig_alrm(int signum){
 //
 class GameController{
     public:
+        friend class Item;
+        vector<Item> itemContainer;
         Map map;
         Snake snake;
         BoardController board;
         Gate gate;
-        int keyboard_in, command = 2, gateCount = 0;
+        int keyIn, command = 2, gateCount = 0, itemCount = 0;
         //Constructor
         GameController() : board(), snake(), gate(map, snake, command, gateCount) {
             //alarm handler
@@ -36,27 +39,46 @@ class GameController{
     void game_start(){
             gate.gateRefresh(); // gateRefresh
             while(true){
+                
+                //gate controller
                 if(gateCount == 10){
                   gateCount = -50;
                   gate.gateRefresh();
                 }
+                
+                //item controller
+                if(itemCount == 15){
+                  bool randomItem = rand() % 2 ? true : false;
+                  Item item((1 + rand()) % 28, (1 + rand()) % 58, randomItem);
+                  set_item(item);
+                  check_item(itemContainer);
+                  itemContainer.push_back(item);
+                  itemCount = 0;
+                }
                 gateCount++;
+                itemCount++;
+
                 _signal = true;
                 ualarm(100000, 0); // set alarm timer to 1sec
                 while(_signal){ // receive keyboard input until alarm ringing
-                    keyboard_in = keyboard_input();
-                    command = keyboard_in != 0 ? keyboard_in : command; // if no keyboard input received, do prev action
+                    keyIn = keyboard_input();
+                    command = keyIn != 0 ? keyIn : command; // if no keyboard input received, do prev action
                 }
                 snake.move(command);
+
                 //snake head hit body
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
                     break;
                 
                 // if snake eat item
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == 4)
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == 4 || map.m[snake.body[0][0]][snake.body[0][1]] == 5)
                 {
+                    if (map.m[snake.body[0][0]][snake.body[0][1]] == 4)
+                        snake.size_up();
+                    else
+                        snake.size_down();
+
                     map.m[snake.body[0][0]][snake.body[0][1]] = 0;
-                    snake.size_up();
                     string state1 = "snake size is : " + to_string(snake.body.size());
                     mvwprintw(board.score_board, 5, 5, state1.c_str());
                 }
@@ -102,9 +124,14 @@ class GameController{
                     mvwprintw(board.main_board, i, j, "M");
                     wattroff(board.main_board, COLOR_PAIR(2));
                 }
-                else if(map.m[i][j] == 4){ // item
+                else if(map.m[i][j] == 4){ // Gitem
                     wattron(board.main_board, COLOR_PAIR(2));
-                    mvwprintw(board.main_board, i, j, "I");
+                    mvwprintw(board.main_board, i, j, "G");
+                    wattroff(board.main_board, COLOR_PAIR(2));
+                }
+                else if(map.m[i][j] == 5){ // Pitem
+                    wattron(board.main_board, COLOR_PAIR(2));
+                    mvwprintw(board.main_board, i, j, "P");
                     wattroff(board.main_board, COLOR_PAIR(2));
                 }
             }
@@ -166,5 +193,30 @@ class GameController{
                 return 5;
         }
         return 0;
+    }
+
+    void set_item(Item item){
+        map.m[item.x][item.y] = item.itemType ? 4 : 5;
+    }
+
+    void erase_item(Item item){
+        map.m[item.x][item.y] = 0;
+    }
+
+    void check_item(vector<Item> &v){
+        for (vector<Item>::iterator it = v.begin(); it != v.end(); it++)
+        {
+            it -> lifeTime++;
+        }
+        
+        for (vector<Item>::iterator it = v.begin(); it != v.end(); it++)
+        {
+            if (it -> lifeTime == 7)
+            {
+                erase_item(*it);
+                v.erase(it);
+            }
+        }
+        
     }
 };

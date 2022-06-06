@@ -24,6 +24,11 @@ class Snake{
         void size_up(){
             body.push_back(empty_body);
         };
+        
+        void size_down(){
+            empty_body = body.back();
+            body.pop_back();
+        };
 
         //move snake
         void move(int command){

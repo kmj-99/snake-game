@@ -29,10 +29,10 @@ class GameController{
             //alarm handler
             signal(SIGALRM, sig_alrm);
             //Gate controller
-            game_start();
+            game_run();
         }
 
-    void game_start(){
+    void game_run(){
             gate.gateRefresh(); // gateRefresh
             while(true){
                 
@@ -43,16 +43,7 @@ class GameController{
                 }
                 
                 //item controller
-                if(itemCount == ITEM_COUNT){
-                  bool randomItem = rand() % 2 ? true : false;
-                  Item item(1 + (rand() % 28), 1 + (rand() % 58), randomItem);
-                  set_item(item);
-                  check_item(itemContainer);
-                  itemContainer.push_back(item);
-                  itemCount = 0;
-                }
-                gateCount++;
-                itemCount++;
+                item_setter();
 
                 _signal = true;
                 ualarm(100000, 0); // set alarm timer to 1sec
@@ -71,17 +62,15 @@ class GameController{
                     break;
 
                 // if snake eat item
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM || map.m[snake.body[0][0]][snake.body[0][1]] == PITEM)
-                {
-                    if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM)
-                        snake.size_up();
-                    else
-                        snake.size_down();
-                    map.m[snake.body[0][0]][snake.body[0][1]] = EMPTY_SPACE;
-                    string state1 = "snake size is : " + to_string(snake.body.size());
-                    mvwprintw(board.score_board, 5, 5, state1.c_str());
-                }
+                check_snake_eat();
+
                 gate.gateSensor();
+
+                if (snake.body.size() < 3 || snake.body.size() > 10)
+                {
+                    break;
+                }
+                
                 render_map();
             }
             while (true)
@@ -91,6 +80,38 @@ class GameController{
             
     }
 
+    void check_snake_eat(){
+        if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM || map.m[snake.body[0][0]][snake.body[0][1]] == PITEM)
+            {
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM)
+                    snake.size_up();
+                else
+                    snake.size_down();
+                map.m[snake.body[0][0]][snake.body[0][1]] = EMPTY_SPACE;
+                string state1 = "snake size is : " + to_string(snake.body.size());
+                mvwprintw(board.score_board, 5, 5, state1.c_str());
+            }
+    }
+
+    void item_setter(){
+        if(itemCount == ITEM_COUNT){
+            bool randomItem = rand() % 2 ? true : false;
+                int rand_x = rand() % HEIGHT;
+                int rand_y = rand() % WIDTH;
+
+                while(!is_empty(rand_x, rand_y)){
+                rand_x = rand() % HEIGHT;
+                rand_y = rand() % WIDTH;
+                }
+                Item item(rand_x, rand_y, randomItem);
+                set_item(item);
+                check_item(itemContainer);
+                itemContainer.push_back(item);
+                itemCount = 0;
+            }
+            gateCount++;
+            itemCount++;
+    }
 
     //refresh map array every 1sec to rendering map
     void render_map(){
@@ -226,5 +247,9 @@ class GameController{
             }
         }
         
+    }
+
+    bool is_empty(int x, int y){
+        return map.m[x][y] == EMPTY_SPACE;
     }
 };

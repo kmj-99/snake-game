@@ -4,12 +4,8 @@
 #include "BoardController.h"
 #include "GateController.h"
 #include "Item.h"
+#include "util.cpp"
 #include <signal.h>
-
-#define UP 259
-#define RIGHT 261
-#define LEFT 260
-#define DOWN 258
 
 bool _signal = true;
 
@@ -41,13 +37,13 @@ class GameController{
             while(true){
                 
                 //gate controller
-                if(gateCount == 10){
+                if(gateCount == GATE_COUNT){
                   gateCount = -50;
                   gate.gateRefresh();
                 }
                 
                 //item controller
-                if(itemCount == 5){
+                if(itemCount == ITEM_COUNT){
                   bool randomItem = rand() % 2 ? true : false;
                   Item item(1 + (rand() % 28), 1 + (rand() % 58), randomItem);
                   set_item(item);
@@ -67,22 +63,21 @@ class GameController{
                 snake.move(command);
 
                 //snake head hit body
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == SNAKE_BODY)
                     break;
 
                 //snake head wall
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == 1)
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == WALL)
                     break;
 
                 // if snake eat item
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == 4 || map.m[snake.body[0][0]][snake.body[0][1]] == 5)
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM || map.m[snake.body[0][0]][snake.body[0][1]] == PITEM)
                 {
-                    if (map.m[snake.body[0][0]][snake.body[0][1]] == 4)
+                    if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM)
                         snake.size_up();
                     else
                         snake.size_down();
-
-                    map.m[snake.body[0][0]][snake.body[0][1]] = 0;
+                    map.m[snake.body[0][0]][snake.body[0][1]] = EMPTY_SPACE;
                     string state1 = "snake size is : " + to_string(snake.body.size());
                     mvwprintw(board.score_board, 5, 5, state1.c_str());
                 }
@@ -104,44 +99,51 @@ class GameController{
         wrefresh(board.main_board);
         wrefresh(board.score_board);
         wrefresh(board.mission_board);
-        for (size_t i = 0; i < 30; i++){
-            for (size_t j = 0; j < 60; j++)
+        for (size_t i = 0; i < HEIGHT; i++){
+            for (size_t j = 0; j < WIDTH; j++)
             {
-                if (map.m[i][j] == 0) // empty space
+                switch (map.m[i][j])
                 {
+                case EMPTY_SPACE:
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, " ");
                     wattroff(board.main_board, COLOR_PAIR(2));
-                }
-                else if(map.m[i][j] == 1){ // wall
+                    break;
+                case WALL:
                     wattron(board.main_board, COLOR_PAIR(1));
                     mvwprintw(board.main_board, i, j, " ");
                     wattroff(board.main_board, COLOR_PAIR(1));
-                }
-                else if(map.m[i][j] == 3){ // snake body
+                    break;
+                case IMMUNE_WALL:
+                    wattron(board.main_board, COLOR_PAIR(1));
+                    mvwprintw(board.main_board, i, j, " ");
+                    wattroff(board.main_board, COLOR_PAIR(1));
+                    break;
+                case SNAKE_BODY:
                     wattron(board.main_board, COLOR_PAIR(4));
                     mvwprintw(board.main_board, i, j, "O");
                     wattroff(board.main_board, COLOR_PAIR(4));
-                }
-                else if(map.m[i][j] == 10){ // Gate
-                    wattron(board.main_board, COLOR_PAIR(2));
-                    mvwprintw(board.main_board, i, j, "1");
-                    wattroff(board.main_board, COLOR_PAIR(2));
-                }
-                else if(map.m[i][j] == 2){ // snake head
+                    break;                                    
+                case SNAKE_HEAD:
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, "M");
                     wattroff(board.main_board, COLOR_PAIR(2));
-                }
-                else if(map.m[i][j] == 4){ // Gitem
+                    break;
+                case GATE:
+                    wattron(board.main_board, COLOR_PAIR(2));
+                    mvwprintw(board.main_board, i, j, "1");
+                    wattroff(board.main_board, COLOR_PAIR(2));
+                    break;
+                case GITEM:
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, "G");
                     wattroff(board.main_board, COLOR_PAIR(2));
-                }
-                else if(map.m[i][j] == 5){ // Pitem
+                    break;
+                case PITEM:
                     wattron(board.main_board, COLOR_PAIR(2));
                     mvwprintw(board.main_board, i, j, "P");
                     wattroff(board.main_board, COLOR_PAIR(2));
+                    break;
                 }
             }
 
@@ -153,20 +155,17 @@ class GameController{
 }
     //erase snake before rendering snake inside map
     void clear_map(){
-        for (size_t i = 0; i < 30; i++)
-            for (size_t j = 0; j < 60; j++){
-                if (map.m[i][j] == 3){
-                  if(j==0 || j==59|| i==0 || i==29){
-                    map.m[i][j]=1;
+        for (size_t i = 0; i < HEIGHT; i++)
+            for (size_t j = 0; j < WIDTH; j++){
+                if (map.m[i][j] == SNAKE_BODY){
+                  if(j == 0 || j == (WIDTH - 1)|| i == 0 || i == (HEIGHT - 1)){
+                    map.m[i][j] = WALL;
                   }else{
-                    map.m[i][j] = 0;
-
+                    map.m[i][j] = EMPTY_SPACE;
                   }
-
                 }
-                if(gateCount==10 && map.m[i][j]==10){
-                    map.m[i][j]=1;
-
+                if(gateCount == 10 && map.m[i][j] == GATE){
+                    map.m[i][j] = WALL;
                 }
               }
     }
@@ -175,13 +174,13 @@ class GameController{
     void set_snake(){
         int tmp_x = snake.body[0][0];
         int tmp_y = snake.body[0][1];
-        map.m[tmp_x][tmp_y] = 2;
+        map.m[tmp_x][tmp_y] = SNAKE_HEAD;
 
         for (vector<vector<int> >::iterator i = snake.body.begin() + 1; i != snake.body.end(); i++)
         {
             tmp_x = (*i)[0];
             tmp_y = (*i)[1];
-            map.m[tmp_x][tmp_y] = 3;
+            map.m[tmp_x][tmp_y] = SNAKE_BODY;
         }
     }
 
@@ -205,11 +204,11 @@ class GameController{
     }
 
     void set_item(Item item){
-        map.m[item.x][item.y] = item.itemType ? 4 : 5;
+        map.m[item.x][item.y] = item.itemType ? GITEM : PITEM;
     }
 
-    void erase_item(Item item){
-        map.m[item.x][item.y] = 0;
+    void expired_item(Item item){
+        map.m[item.x][item.y] = EMPTY_SPACE;
     }
 
     void check_item(vector<Item> &v){
@@ -220,9 +219,9 @@ class GameController{
         
         for (vector<Item>::iterator it = v.begin(); it != v.end(); it++)
         {
-            if (it -> lifeTime == 7)
+            if (it -> lifeTime == ITEM_LIFE_TIME)
             {
-                erase_item(*it);
+                expired_item(*it);
                 v.erase(it);
             }
         }

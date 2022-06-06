@@ -1,10 +1,7 @@
 #include "Map.h"
 #include <cstdlib>
 #include <ctime>
-#define UP 259
-#define RIGHT 261
-#define LEFT 260
-#define DOWN 258
+#include "util.cpp"
 using namespace std;
 
 

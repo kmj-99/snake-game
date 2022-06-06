@@ -26,7 +26,7 @@ class Gate{
         void gateRefresh(){
           x_border=-1;
           y_border=-1;
-          shape=0;
+          shape=rand()%3;
           x=-1; y=-1; gateX1=-1; gateX2=-1; gateY1=-1; gateY2=-1;
           x_border_left=-1; x_border_right=-1;
           y_border_up=-1; y_border_down=-1;
@@ -247,8 +247,32 @@ class Gate{
                 }
               }
 
-          };
-        }
+            case 2:
+              if(snake.body[0][0]==gateX1 && snake.body[0][1]==gateY1){ // x_line으로 갔을때
+                    snake.body[0][0]=gateX2;
+                    snake.body[0][1]=gateY2;
+                    gateCount-=10;
+                    if(gateX2==0){
+                        command=4;  // down
+                    }else if(gateX2==29){
+                        command=1; // up
+                    }
+
+              }else if(snake.body[0][0]==gateX2 && snake.body[0][1]==gateY2){ // y_line으로 갔을 때
+                    snake.body[0][0]=gateX1;
+                    snake.body[0][1]=gateY1;
+                    gateCount-=10;
+                    if(gateY1==0){
+                      command = 2;// right
+                    }else if(gateY1==59){
+                      command= 3;// left
+                    }
+
+                }
+
+
+            };
+      }
 
 
 };

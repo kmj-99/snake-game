@@ -11,9 +11,9 @@ class Snake{
 
         //Constructor
         Snake() {
-            vector<int> head{15, 30};
-            vector<int> head2{15, 29};
-            vector<int> head3{15, 28};
+            vector<int> head{2, 30};
+            vector<int> head2{2, 29};
+            vector<int> head3{2, 28};
             body.push_back(head);
             body.push_back(head2);
             body.push_back(head3);

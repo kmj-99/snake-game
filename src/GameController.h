@@ -69,7 +69,11 @@ class GameController{
                 //snake head hit body
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 3)
                     break;
-                
+
+                //snake head wall
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == 1)
+                    break;
+
                 // if snake eat item
                 if (map.m[snake.body[0][0]][snake.body[0][1]] == 4 || map.m[snake.body[0][0]][snake.body[0][1]] == 5)
                 {

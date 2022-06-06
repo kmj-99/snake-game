@@ -1,7 +1,7 @@
 #include "Map.h"
 #include <cstdlib>
 #include <ctime>
-#include "util.cpp"
+#include "util.h"
 using namespace std;
 
 

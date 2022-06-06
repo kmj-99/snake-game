@@ -4,7 +4,7 @@
 #include "BoardController.h"
 #include "GateController.h"
 #include "Item.h"
-#include "util.cpp"
+#include "util.h"
 #include <signal.h>
 
 bool _signal = true;

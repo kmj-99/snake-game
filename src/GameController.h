@@ -47,9 +47,9 @@ class GameController{
                 }
                 
                 //item controller
-                if(itemCount == 15){
+                if(itemCount == 5){
                   bool randomItem = rand() % 2 ? true : false;
-                  Item item((1 + rand()) % 28, (1 + rand()) % 58, randomItem);
+                  Item item(1 + (rand() % 28), 1 + (rand() % 58), randomItem);
                   set_item(item);
                   check_item(itemContainer);
                   itemContainer.push_back(item);
@@ -89,6 +89,11 @@ class GameController{
                 gate.gateSensor();
                 render_map();
             }
+            while (true)
+            {
+                /* code */
+            }
+            
     }
 
 

@@ -34,16 +34,16 @@ int main()
 
   //palette
   start_color();
-  init_pair(1, COLOR_BLUE, COLOR_YELLOW); // wall color
-  init_pair(2, COLOR_RED, COLOR_BLACK); // game screen color
+  init_pair(1, COLOR_BLUE, COLOR_BLACK); // wall color
+  init_pair(2, COLOR_RED, COLOR_WHITE); // game screen color
   init_pair(3, COLOR_BLACK, COLOR_WHITE); // background color
-  init_pair(4, COLOR_MAGENTA, COLOR_BLACK); // snake color
+  init_pair(4, COLOR_RED, COLOR_WHITE); // snake color
 
   // background window
   WINDOW *main_window;
   nodelay(stdscr, true);
   main_window = newwin(40, 125, 0, 0);
-  wborder(main_window, '|', '|', '-', '-', '*', '*', '*', '*');
+  // wborder(main_window, '|', '|', '-', '-', '*', '*', '*', '*');
   wbkgd(main_window, COLOR_PAIR(3));
   wrefresh(main_window);
 

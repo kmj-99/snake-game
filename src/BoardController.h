@@ -12,16 +12,16 @@ class BoardController{
 
             //set score board
             score_board = newwin(15, 40, 5, 73);
-            wbkgd(score_board, COLOR_PAIR(2));
-            wattron(score_board, COLOR_PAIR(2));
-            wborder(score_board, '*', '*', '*', '*', '*', '*', '*', '*');
+            wbkgd(score_board, COLOR_PAIR(1));
+            wattron(score_board, COLOR_PAIR(1));
+            // wborder(score_board, '*', '*', '*', '*', '*', '*', '*', '*');
             mvwprintw(score_board, 0, 14, "Score Board");
 
             //set mission board
             mission_board = newwin(12, 40, 23, 73);
-            wbkgd(mission_board, COLOR_PAIR(2));
-            wattron(mission_board, COLOR_PAIR(2));
-            wborder(mission_board, '*', '*', '*', '*', '*', '*', '*', '*');
+            wbkgd(mission_board, COLOR_PAIR(1));
+            wattron(mission_board, COLOR_PAIR(1));
+            // wborder(mission_board, '*', '*', '*', '*', '*', '*', '*', '*');
             mvwprintw(mission_board, 0, 14, "Mission Board");
 
     };

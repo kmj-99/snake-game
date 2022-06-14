@@ -6,7 +6,8 @@
 #include "Item.h"
 #include "util.h"
 #include <signal.h>
-
+#ifndef GAME
+#define GAME
 bool _signal = true;
 
 // when receive alarm, set _siganl true
@@ -15,11 +16,8 @@ void sig_alrm(int signum){
 }
 
 int goal_snakeSize=rand()%5+5;
-
 int goal_growthPoint=rand()%5+5;
-
 int goal_positionPoint=rand()%3+5;
-
 int goal_gateCount=rand()%5+5;
 class GameController{
     public:
@@ -49,7 +47,8 @@ class GameController{
             game_run();
         }
 
-    void game_run(){
+
+        void game_run(){
 
             mvwprintw(board.score_board, 5, 5, score_snakeSize.c_str());
             mvwprintw(board.score_board, 6, 5, score_growthPoint.c_str());
@@ -322,3 +321,4 @@ class GameController{
         return map.m[x][y] == EMPTY_SPACE;
     }
 };
+#endif

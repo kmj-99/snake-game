@@ -1,7 +1,8 @@
 #include <vector>
 
 using namespace std;
-
+#ifndef SNAKE
+#define SNAKE
 class Snake{
     public:
         //snake vector ((head x, head y),(body x, body y),(body)(body)...)
@@ -24,7 +25,7 @@ class Snake{
         void size_up(){
             body.push_back(empty_body);
         };
-        
+
         void size_down(){
             empty_body = body.back();
             body.pop_back();
@@ -73,3 +74,4 @@ class Snake{
             // cout << empty_body[0] << empty_body[1] << endl;
         }
 };
+#endif

@@ -50,6 +50,7 @@ int main()
   // game setting
   GameController start;
 
+
   getch();
   endwin();
 

@@ -15,18 +15,28 @@ void sig_alrm(int signum){
   _signal = false;
 }
 
-int goal_snakeSize=rand()%5+5;
-int goal_growthPoint=rand()%5+5;
-int goal_positionPoint=rand()%3+5;
-int goal_gateCount=rand()%5+5;
+
+int goal_snakeSize=5;
+int goal_growthPoint=3;
+int goal_positionPoint=2;
+int goal_gateCount=2;
+
+
+// int goal_snakeSize=rand()%5+5;
+// int goal_growthPoint=rand()%5+5;
+// int goal_positionPoint=rand()%3+5;
+// int goal_gateCount=rand()%5+5;
 class GameController{
     public:
         friend class Item;
         vector<Item> itemContainer;
         Map map;
+        int count=0;
         Snake snake;
         BoardController board;
         Gate gate;
+        int speed=100000;
+        int snakeColor=4;
         int keyIn, command = 2, gateCount = 0, itemCount = 0;
         pair<int,int> gate1=make_pair(0,0);
         pair<int,int> gate2=make_pair(0,0);
@@ -35,20 +45,48 @@ class GameController{
         string score_growthPoint = "+:"+to_string(GrowthItemsCount);
         string score_positionPoint= "-:"+to_string(PositionItemCount);
         string score_gateCount = "G:"+to_string(usedGateCount);
-        string mission_snakeSize = "B:" + to_string(goal_snakeSize)+" ()";
-        string mission_growthPoint = "+:"+to_string(goal_growthPoint)+" ()";
-        string mission_positionPoint= "-:"+to_string(goal_positionPoint)+" ()";
-        string mission_gateCount = "G:"+to_string(goal_gateCount)+" ()";
+        string mission_snakeSize = "B:" + to_string(goal_snakeSize)+" ( )";
+        string mission_growthPoint = "+:"+to_string(goal_growthPoint)+" ( )";
+        string mission_positionPoint= "-:"+to_string(goal_positionPoint)+" ( )";
+        string mission_gateCount = "G:"+to_string(goal_gateCount)+" ( )";
         //Constructor
-        GameController() : board(), snake(), gate(map, snake, command,usedGateCount,board,gate1,gate2,goal_gateCount) {
-            //alarm handler
-            signal(SIGALRM, sig_alrm);
-            //Gate controller
-            game_run();
+        GameController() : board(), snake(), gate(map, snake, command,usedGateCount,board,gate1,gate2,goal_gateCount) {}
+
+        void game_control(int arr[][60],int& i){
+          switch (i) {
+            case 0:
+              snakeColor=4;
+              speed=100000;
+              break;
+            case 1:
+              snakeColor=5;
+              speed=70000;
+              break;
+            case 2:
+              snakeColor=6;
+              speed=40000;
+              break;
+            case 3:
+              snakeColor=4;
+              speed=10000;
+              break;
+          }
+          goal_snakeSize=5;
+          goal_growthPoint=3;
+          goal_positionPoint=2;
+          goal_gateCount=2;
+
+          GrowthItemsCount=0;
+          PositionItemCount=0;
+          usedGateCount=0;
+
+          snake=Snake();
+          signal(SIGALRM,sig_alrm);
+          command=2;
+          game_run(arr,i);
         }
 
-
-        void game_run(){
+        void game_run(int m4[][60],int& i){
 
             mvwprintw(board.score_board, 5, 5, score_snakeSize.c_str());
             mvwprintw(board.score_board, 6, 5, score_growthPoint.c_str());
@@ -63,7 +101,7 @@ class GameController{
 
             for(int i=0;i<HEIGHT;i++){
               for(int j=0;j<WIDTH;j++){
-                map.m[i][j]=map.m4[i][j];
+                map.m[i][j]=m4[i][j];
               }
             }
             gate.syncMap();
@@ -79,7 +117,8 @@ class GameController{
                 item_setter();
 
                 _signal = true;
-                ualarm(100000, 0); // set alarm timer to 1sec
+                //100000
+                ualarm(speed, 0); // set alarm timer to 1sec
                 while(_signal){ // receive keyboard input until alarm ringing
                     keyIn = keyboard_input();
                     command = keyIn != 0 ? keyIn : command; // if no keyboard input received, do prev action
@@ -87,29 +126,60 @@ class GameController{
                 snake.move(command);
 
                 //snake head hit body
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == SNAKE_BODY)
-                    break;
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == SNAKE_BODY){
+                      break;
+                  }
+
 
                 //snake head wall
-                if (map.m[snake.body[0][0]][snake.body[0][1]] == WALL)
+                if (map.m[snake.body[0][0]][snake.body[0][1]] == WALL){
                     break;
+                  }
 
                 // if snake eat item
                 check_snake_eat();
 
                 gate.gateSensor();
 
-                if (snake.body.size() < 3 || snake.body.size() > 10)
-                {
+                if (snake.body.size() < 3 || snake.body.size() > 10){
                     break;
                 }
 
                 render_map();
+
+                if(snake.body.size()>=goal_snakeSize && GrowthItemsCount>=goal_growthPoint && PositionItemCount>=goal_positionPoint && usedGateCount>=goal_gateCount){
+                    i++;
+                    return;
+                }
             }
-            while (true)
-            {
-              
-            }
+
+            int temp;
+
+
+
+              refresh();
+              WINDOW *ending_board3=newwin(30,60,5,10);
+              wbkgd(ending_board3,COLOR_PAIR(1));
+              wattron(ending_board3,COLOR_PAIR(1));
+              mvwprintw(ending_board3,13,27,"Game Over");
+              mvwprintw(ending_board3,15,18,"any press key for restart...");
+
+              wrefresh(ending_board3);
+              refresh();
+              int tmp= command;
+              command = 999;
+              while (command == 999) {
+                keyIn = keyboard_input();
+                command = keyIn != 0 ? keyIn : command;
+              }
+              command = tmp;
+
+
+              i=0;
+              count=0;
+
+
+
 
     }
 
@@ -137,23 +207,31 @@ class GameController{
 
           }
 
-        if(snake.body.size()==goal_snakeSize){
+        if(snake.body.size()>=goal_snakeSize){
             mission_snakeSize = "B:" + to_string(goal_snakeSize)+" (V)";
             mvwprintw(board.mission_board, 5, 5, mission_snakeSize.c_str());
+        }else{
+          mission_snakeSize = "B:" + to_string(goal_snakeSize)+" ( )";
+          mvwprintw(board.mission_board, 5, 5, mission_snakeSize.c_str());
         }
 
-        if(GrowthItemsCount==goal_growthPoint){
+        if(GrowthItemsCount>=goal_growthPoint){
           mission_growthPoint = "+:"+to_string(goal_growthPoint)+" (V)";
           mvwprintw(board.mission_board, 6, 5, mission_growthPoint.c_str());
-
-
+        }else{
+          mission_growthPoint = "+:"+to_string(goal_growthPoint)+" ( )";
+          mvwprintw(board.mission_board, 6, 5, mission_growthPoint.c_str());
         }
 
-        if(PositionItemCount==goal_positionPoint){
+        if(PositionItemCount>=goal_positionPoint){
           mission_positionPoint= "-:"+to_string(goal_positionPoint)+" (V)";
           mvwprintw(board.mission_board, 7, 5, mission_positionPoint.c_str());
-
+        }else{
+          mission_positionPoint= "-:"+to_string(goal_positionPoint)+" ( )";
+          mvwprintw(board.mission_board, 7, 5, mission_positionPoint.c_str());
         }
+
+
 
 
 
@@ -206,15 +284,15 @@ class GameController{
                     mvwprintw(board.main_board, i, j, " ");
                     wattroff(board.main_board, COLOR_PAIR(1));
                     break;
-                case SNAKE_BODY:
-                    wattron(board.main_board, COLOR_PAIR(4));
+                case SNAKE_BODY: // 3 ,4 ,
+                    wattron(board.main_board, COLOR_PAIR(snakeColor));
                     mvwprintw(board.main_board, i, j, "O");
-                    wattroff(board.main_board, COLOR_PAIR(4));
+                    wattroff(board.main_board, COLOR_PAIR(snakeColor));
                     break;
                 case SNAKE_HEAD:
-                    wattron(board.main_board, COLOR_PAIR(2));
+                    wattron(board.main_board, COLOR_PAIR(snakeColor));
                     mvwprintw(board.main_board, i, j, "M");
-                    wattroff(board.main_board, COLOR_PAIR(2));
+                    wattroff(board.main_board, COLOR_PAIR(snakeColor));
                     break;
                 case GATE:
                     wattron(board.main_board, COLOR_PAIR(2));

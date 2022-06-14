@@ -38,6 +38,9 @@ int main()
   init_pair(2, COLOR_RED, COLOR_WHITE); // game screen color
   init_pair(3, COLOR_BLACK, COLOR_WHITE); // background color
   init_pair(4, COLOR_RED, COLOR_WHITE); // snake color
+  init_pair(5,COLOR_BLUE,COLOR_WHITE);
+  init_pair(6,COLOR_BLACK,COLOR_WHITE);
+
 
   // background window
   WINDOW *main_window;
@@ -49,6 +52,28 @@ int main()
 
   // game setting
   GameController start;
+
+
+  Map m;
+  int i=0;
+  while(i!=-1){
+    switch (i) {
+      case 0:
+          start.game_control(m.m1,i);
+          break;
+        case 1:
+          start.game_control(m.m2,i);
+          break;
+        case 2:
+          start.game_control(m.m3,i);
+          break;
+        case 3:
+          start.game_control(m.m4,i);
+          break;
+        }
+
+
+  }
 
 
   getch();

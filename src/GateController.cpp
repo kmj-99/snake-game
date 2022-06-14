@@ -68,7 +68,7 @@ void Gate::gateSensor(){
 
     mvwprintw(board.score_board, 8, 5, state4.c_str());
 
-    if(usedGateCount==goal_gateCount){
+    if(usedGateCount>=goal_gateCount){
       mvwprintw(board.mission_board, 8, 5, mission_gateCount.c_str());
     }
 
@@ -100,7 +100,7 @@ void Gate::gateSensor(){
 
     string state4 = "G:"+to_string(usedGateCount);
     mvwprintw(board.score_board, 8, 5, state4.c_str());
-    if(usedGateCount==goal_gateCount){
+    if(usedGateCount>=goal_gateCount){
       mvwprintw(board.mission_board, 8, 5, mission_gateCount.c_str());
     }
 

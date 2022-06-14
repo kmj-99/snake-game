@@ -22,4 +22,18 @@ BoardController::BoardController(){
   // wborder(mission_board, '*', '*', '*', '*', '*', '*', '*', '*');
   mvwprintw(mission_board, 0, 14, "Mission Board");
 
+  ending_board=newwin(30,60,5,10);
+  wbkgd(ending_board,COLOR_PAIR(1));
+  wattron(ending_board,COLOR_PAIR(1));
+  mvwprintw(ending_board,13,27,"Game Over");
+  mvwprintw(ending_board,15,18,"any press key for restart...");
+
+
+  ending_board2=newwin(30,60,5,10);
+  wbkgd(ending_board2,COLOR_PAIR(1));
+  wattron(ending_board2,COLOR_PAIR(1));
+  mvwprintw(ending_board2,13,27,"Game Over");
+  mvwprintw(ending_board2,15,18,"any press key for restart...");
+
+
 }

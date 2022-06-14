@@ -15,5 +15,11 @@ BoardController.o : src/BoardController.cpp src/BoardController.h
 	$(CC) -g -c src/BoardController.cpp
 
 
+
+GameController.o : src/GameController.cpp src/GameController.h
+	$(CC) -g -c src/GameController.cpp
+
+
+
 clean:
 	rm -rf src/*.o src/*.exe

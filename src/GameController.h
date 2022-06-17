@@ -16,16 +16,16 @@ void sig_alrm(int signum){
 }
 
 
-int goal_snakeSize=5;
-int goal_growthPoint=3;
-int goal_positionPoint=2;
-int goal_gateCount=2;
+// int goal_snakeSize=5;
+// int goal_growthPoint=3;
+// int goal_positionPoint=2;
+// int goal_gateCount=2;
 
 
-// int goal_snakeSize=rand()%5+5;
-// int goal_growthPoint=rand()%5+5;
-// int goal_positionPoint=rand()%3+5;
-// int goal_gateCount=rand()%5+5;
+int goal_snakeSize=rand()%5+5;
+int goal_growthPoint=rand()%5+5;
+int goal_positionPoint=rand()%3+5;
+int goal_gateCount=rand()%5+5;
 class GameController{
     public:
         friend class Item;
@@ -71,10 +71,13 @@ class GameController{
               speed=10000;
               break;
           }
-          goal_snakeSize=5;
-          goal_growthPoint=3;
-          goal_positionPoint=2;
-          goal_gateCount=2;
+          goal_snakeSize=rand()%5+5;
+          goal_growthPoint=rand()%5+5;
+          goal_positionPoint=rand()%3+5;
+          goal_gateCount=rand()%5+5;
+          score_snakeSize="B:3";
+          score_growthPoint = "+:0";
+          score_positionPoint= "-:0";
 
           GrowthItemsCount=0;
           PositionItemCount=0;

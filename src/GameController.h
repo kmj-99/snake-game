@@ -87,7 +87,8 @@ class GameController{
         }
 
         void game_run(int m4[][60],int& i){
-
+           string level="level "+to_string(i+1);
+            mvwprintw(board.score_board,3,5,level.c_str());
             mvwprintw(board.score_board, 5, 5, score_snakeSize.c_str());
             mvwprintw(board.score_board, 6, 5, score_growthPoint.c_str());
             mvwprintw(board.score_board, 7, 5, score_positionPoint.c_str());
@@ -162,7 +163,7 @@ class GameController{
               wbkgd(ending_board3,COLOR_PAIR(1));
               wattron(ending_board3,COLOR_PAIR(1));
               mvwprintw(ending_board3,13,27,"Game Over");
-              mvwprintw(ending_board3,15,18,"any press key for restart...");
+              mvwprintw(ending_board3,15,18,"any press Arrow key for restart...");
 
               wrefresh(ending_board3);
               refresh();
@@ -184,7 +185,6 @@ class GameController{
     }
 
     void check_snake_eat(){
-
 
 
       if (map.m[snake.body[0][0]][snake.body[0][1]] == GITEM || map.m[snake.body[0][0]][snake.body[0][1]] == PITEM)

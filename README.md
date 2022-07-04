@@ -10,7 +10,7 @@
 
 
 
-## 1.개발&nbsp;환경
+# 1.개발&nbsp;환경
 **언어**: C++
 
 **라이브러리**: 외부 라이브러리로 텍스트 기반 사용자 인터페이스를 제어할 수 있는 ncurses
@@ -30,7 +30,7 @@ $sudo apt-get install libncurses5-dev libncursesw5-dev
 **협업툴**: Slack
 
 
-## 2.개발&nbsp;내용&nbsp;및&nbsp;결과물
+# 2.개발&nbsp;내용&nbsp;및&nbsp;결과물
 
 ### 1단계
 - Ncurses의 screen과 window를 이용해 맵과 미션보드, 스코어보드를 출력한다.

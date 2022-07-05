@@ -47,11 +47,10 @@ Map의 Wall의 임의의 위치에서 한 쌍에 Gate가 출현할 수 있도록
 
 # 목차
 1. [개발&nbsp;환경](#1.개발-환경)
-2. [개발&nbsp;내용&nbsp;및&nbsp;결과물](#2.개발-내용-및-결과물)
-3. [프로젝트&nbsp;구조](#3.프로젝트-구조)
+2. [프로젝트&nbsp;구조](#2.프로젝트-구조)
+3. [개발&nbsp;내용&nbsp;및&nbsp;결과물](#3.개발-내용-및-결과물)
 4. [실행 방법](#4.실행-방법)
 5. [참고 문헌](#4.참고-문헌)
-
 
 
 # 1.개발&nbsp;환경
@@ -72,9 +71,13 @@ $sudo apt-get install libncurses5-dev libncursesw5-dev
 **소스코드 관리**: Git
 
 **협업툴**: Slack
+<br/><br/>
 
+# 2.프로젝트&nbsp;구조
+![project_structure](https://user-images.githubusercontent.com/76093968/177243203-4f667a80-0f3b-42be-8c13-35af78bf3cd9.png)
+<br/><br/>
 
-# 2.개발&nbsp;내용&nbsp;및&nbsp;결과물
+# 3.개발&nbsp;내용&nbsp;및&nbsp;결과물
 
 ### 1단계
 -	Ncurses의 window를 이용해서 게임을 진행할 공간을 만들어 주었다. 배경을 위한 main_window를 먼저 만들어주고 그 위에 snake가 움직일 main_board, 점수가 표현될 score_board, 미션의 수행 여부를 표시해 줄 mission_board를 만들어준다.

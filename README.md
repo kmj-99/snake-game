@@ -49,8 +49,8 @@ Map의 Wall의 임의의 위치에서 한 쌍에 Gate가 출현할 수 있도록
 1. [개발&nbsp;환경](#1.개발-환경)
 2. [프로젝트&nbsp;구조](#2.프로젝트-구조)
 3. [개발&nbsp;내용&nbsp;및&nbsp;결과물](#3.개발-내용-및-결과물)
-4. [실행 방법](#4.실행-방법)
-5. [참고 문헌](#4.참고-문헌)
+4. [실행&nbsp;방법](#4.실행-방법)
+5. [참고&nbsp;문헌](#4.참고-문헌)
 
 
 # 1.개발&nbsp;환경
@@ -149,9 +149,39 @@ $sudo apt-get install libncurses5-dev libncursesw5-dev
 -	speed변수를 하나 선언해서 level이 높아질 때마다 스네이크의 속도를 더 빠르게 만든다.
 -	Main.cpp 안에 init_pair을 만들어서 level마다 달라지는 스네이크의 색깔을 정의를 한다. 그리고 snakeColor변수를 선언해서 level마다 snakeColor에 값을 다르게 할당을 하여서 level마다 스네이크의 색깔을 다르게 나타나도록 만든다.
 -	ending_board라는 window를 하나 만들어서 벽에 부딪히거나 body에 부딪히면 ending_board를 띄우도록 한다.
+<br/><br/>  
+
+**첫 번째Map**  
+![level_1](https://user-images.githubusercontent.com/76093968/177245740-75f9bbdb-9a62-4580-a34a-fe2bf0dab8d4.png)
 
 
+**두 번째Map**  
+![level_2](https://user-images.githubusercontent.com/76093968/177245760-bfad461b-13b7-480a-89ca-54d6b7ebe082.png)
 
 
+**세 번째Map**  
+![level_3](https://user-images.githubusercontent.com/76093968/177245776-843117d6-95f0-4ca6-8e10-5e5f9460d896.png)
 
+**네 번째Map**  
+![level_4](https://user-images.githubusercontent.com/76093968/177245782-23c8622c-7d90-4d9f-8cbc-030b827d82aa.png)
 
+**Game Over**  
+![game_over](https://user-images.githubusercontent.com/76093968/177245812-8a8f73ad-e15b-4772-97af-22ae167e1ec8.png)
+<br/><br/>
+
+# 4.실행&nbsp;방법
+<br/><br/>
+리눅스의 터미널에 다음과 같은 명령어를 통해서 본 프로젝트를 받아온다.  
+```
+git clone https://github.com/jykim-rust/snake-game.git
+```
+본 프로젝트를 clone한 뒤 다음과 같은 매뉴열에 따라서 게임을 진행한다.
+<br/><br/>
+**1.make clean을 이용해 object파일을 지워준다.**  
+<br/>
+**2.make를 통해서 컴파일을 하여 실행파일인 snake를 생성한다.**
+<br/><br/>
+**3.snake를 실행하게되면 첫 번째 Map이 나오면서 게임이 실행이 된다.**
+<br/><br/>
+**4.옆에 나와 있는 mission을 달성하면 다음 레벨로 넘어간다.**
+<br/><br/>

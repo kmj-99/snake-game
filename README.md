@@ -50,7 +50,7 @@ Map의 Wall의 임의의 위치에서 한 쌍에 Gate가 출현할 수 있도록
 2. [프로젝트&nbsp;구조](#2.프로젝트-구조)
 3. [개발&nbsp;내용&nbsp;및&nbsp;결과물](#3.개발-내용-및-결과물)
 4. [실행&nbsp;방법](#4.실행-방법)
-5. [참고&nbsp;문헌](#4.참고-문헌)
+5. [참고&nbsp;문헌](#5.참고-문헌)
 
 
 # 1.개발&nbsp;환경
@@ -170,18 +170,25 @@ $sudo apt-get install libncurses5-dev libncursesw5-dev
 <br/><br/>
 
 # 4.실행&nbsp;방법
-<br/><br/>
 리눅스의 터미널에 다음과 같은 명령어를 통해서 본 프로젝트를 받아온다.  
 ```
 git clone https://github.com/jykim-rust/snake-game.git
 ```
-본 프로젝트를 clone한 뒤 다음과 같은 매뉴열에 따라서 게임을 진행한다.
 <br/><br/>
-**1.make clean을 이용해 object파일을 지워준다.**  
+본 프로젝트를 clone한 뒤 다음과 같은 순서에 따라서 게임을 진행한다.
+<br/><br/>
+**1. make clean을 이용해 object파일을 지워준다.**  
 <br/>
-**2.make를 통해서 컴파일을 하여 실행파일인 snake를 생성한다.**
+**2. make를 통해서 컴파일을 하여 실행파일인 snake를 생성한다.**
 <br/><br/>
-**3.snake를 실행하게되면 첫 번째 Map이 나오면서 게임이 실행이 된다.**
+**3. snake를 실행하게되면 첫 번째 Map이 나오면서 게임이 실행이 된다.**
 <br/><br/>
-**4.옆에 나와 있는 mission을 달성하면 다음 레벨로 넘어간다.**
+**4. 옆에 나와 있는 mission을 달성하면 다음 레벨로 넘어간다.**
 <br/><br/>
+  
+# 5.참고&nbsp;문헌
+https://www.cplusplus.com/  c++과 관련해서 라이브러리나 관련 문법 ,설명들을 찾을 때 많이 이용하였다.  
+https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ ncurses 관련 문법이나 설명, 코드들을 참조할 때 많이 이용하였다. 
+
+  
+  

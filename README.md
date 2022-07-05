@@ -1,4 +1,49 @@
 # snake-game
+c++언어를 사용하고 ncurses라이브러리를 사용하여서 게임을 만드는 프로젝트.
+
+# 프로젝트 설명
+
+
+![Snake_GameImage](https://user-images.githubusercontent.com/76093968/177235737-68e7c783-f0b3-431e-a88f-fc6620d94a6a.png)
+
+**Immune Wall**: Gate로 변할 수 없는 Wall
+
+**Snake Body**: Snake의 몸
+
+**Gate B && Gate A**: Snake가 통과할 수 있는 Gate(Gate A로 들어가면 Gate B로 나온다.)
+
+**Growth Item**: Snake Body의 길이를 1 증가시켜주는 Item
+
+**Wall**: Gate로 변할 수 있는 Wall
+
+**Poison Item**: Snake Body의 길이를 1 감소시키는 Item
+
+전체적은 구조는 위와 같이 구성되어 있다. 해당 프로젝트는 총 6단계로 나누어서 구현을 한다.
+
+### 1단계
+NCurses Library를 이용하여 Snake 게임을 할 수 있는 Map을 만든다.
+
+### 2단계
+1단계에서 만든 Map위에서 Snake를 표시하고 방향키로 Snake를 움직이도록 만든다.
+
+### 3단계
+Map위에 Growth Item과 Poison Item을 출현시켜서 2단계에서 만든 Snake가 Item을 먹을때
+적절한 액션을 취할 수 있도록 한다.
+
+(참고:Snake Game의 구조)
+
+### 4단계
+Map의 Wall의 임의의 위치에서 한 쌍에 Gate가 출현할 수 있도록 하고,
+각 Gate에 Snake가 통과할 수 있도록 한다.
+
+(참고: Immune Wall은 Gate가 될 수 없다.)
+
+### 5단계
+우측에 게임 점수를 표시하는 화면을 구성한다. 또한 Mission을 달성하면 다음 Map으로 진행하도록 프로그램을 완성한다.
+
+(참고: Stage는 최소 4개로 구성하고, 각 Stage의 Map은 서로 다르다.)
+
+### 6단계(추가구현)
 
 
 # 목차
